@@ -16,6 +16,7 @@ namespace FormacionSDK
             string accessKey = "";
             string secretKey = "";
             Amazon.RegionEndpoint region = Amazon.RegionEndpoint.EUWest1;
+            string strIdCuenta = "";
 
             AmazonECSClient ECSClient = new AmazonECSClient(accessKey, secretKey, region);
 
@@ -76,7 +77,7 @@ namespace FormacionSDK
                     new Target()
                     {
                         Id = "destino1", //identificador del destino
-                        Arn = "arn:aws:ecs:eu-west-1:837968644020:cluster/formacionfargate", //ARN del cluster
+                        Arn = "arn:aws:ecs:eu-west-1:"+strIdCuenta+":cluster/formacionfargate", //ARN del cluster
                         EcsParameters = new EcsParameters() //parametros para destinos ECS
                         {
                             LaunchType = Amazon.CloudWatchEvents.LaunchType.FARGATE, //tipo de ejecucion
@@ -89,10 +90,10 @@ namespace FormacionSDK
                                 }
                             },
                             TaskCount = 1, //numero de tareas
-                            TaskDefinitionArn = "arn:aws:ecs:eu-west-1:837968644020:task-definition/formacionfargatetask", //ARN de la definicon de tarea
+                            TaskDefinitionArn = "arn:aws:ecs:eu-west-1:"+strIdCuenta+":task-definition/formacionfargatetask", //ARN de la definicon de tarea
                         },
                         Input = "{\"containerOverrides\":[{\"name\":\"container\",\"command\":[\"formacion-fargate\",\"mifichero\"]}]}", //input
-                        RoleArn = "arn:aws:iam::837968644020:role/ecsEventsRole", //ARN del rol de ejecucion
+                        RoleArn = "arn:aws:iam::"+strIdCuenta+":role/ecsEventsRole", //ARN del rol de ejecucion
                     }
                 },
             }).Result;
